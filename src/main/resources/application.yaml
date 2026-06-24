@@ -19,3 +19,5 @@ spring:
     flyway:
       enabled: true
       locations: classpath:db/migrations
+jwt:
+  secret: ${SECRET:jwt_secret}
