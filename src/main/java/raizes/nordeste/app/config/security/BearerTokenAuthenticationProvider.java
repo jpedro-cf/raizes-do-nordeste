@@ -1,5 +1,6 @@
 package raizes.nordeste.app.config.security;
 
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -10,15 +11,10 @@ import raizes.nordeste.app.infra.repositories.UsersRepository;
 import raizes.nordeste.app.shared.exceptions.NotFoundException;
 
 @Component
+@RequiredArgsConstructor
 public class BearerTokenAuthenticationProvider implements AuthenticationProvider {
     private final UsersRepository usersRepository;
     private final TokenService tokenService;
-
-    public BearerTokenAuthenticationProvider(UsersRepository usersRepository,
-                                             TokenService tokenService){
-        this.usersRepository = usersRepository;
-        this.tokenService = tokenService;
-    }
 
     @Override
     public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {

@@ -20,4 +20,5 @@ spring:
       enabled: true
       locations: classpath:db/migrations
 jwt:
-  secret: ${SECRET:jwt_secret}
+  # random fallback value in case you missed
+  secret: ${SECRET:2bd3855646db537030105d119dbdf37d39b16fb174dafbaa1424d8441b1671a9}

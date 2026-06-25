@@ -1,8 +1,11 @@
 package raizes.nordeste.app.config.security;
 
+import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.OctetSequenceKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,7 +31,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -45,12 +51,13 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable);
 
-        http.addFilterBefore(new BearerTokenAuthenticationFilter(manager), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new BearerTokenAuthenticationFilter(manager), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .anyRequest().authenticated()
-        );
+        )
+        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -63,7 +70,6 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
@@ -72,10 +78,12 @@ public class SecurityConfig {
 
     @Bean
     public JwtEncoder jwtEncoder() {
-        var key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-        var jwk = new OctetSequenceKey.Builder(key).build();
-        var jwkSet = new ImmutableJWKSet<>(new JWKSet(jwk));
-        return new NimbusJwtEncoder(jwkSet);
+        var key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+        return new NimbusJwtEncoder(new ImmutableJWKSet<>(new JWKSet(
+                new OctetSequenceKey.Builder(key.getEncoded())
+                        .algorithm(JWSAlgorithm.HS256)
+                        .build()
+        )));
     }
 
     @Bean

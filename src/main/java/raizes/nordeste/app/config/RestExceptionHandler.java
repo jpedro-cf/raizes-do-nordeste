@@ -18,6 +18,7 @@ public class RestExceptionHandler {
     public ProblemDetail handleApplicationException(AppException e){
         return e.toProblemDetail();
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
@@ -31,7 +32,7 @@ public class RestExceptionHandler {
 
         var pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         pb.setTitle("Invalid Params.");
-        pb.setProperty("errors", errors);
+        pb.setProperty("detail", errors);
 
         return pb;
     }

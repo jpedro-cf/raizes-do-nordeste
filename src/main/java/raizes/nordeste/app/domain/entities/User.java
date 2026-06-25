@@ -28,8 +28,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.CUSTOMER;
 
+    @Column(nullable = true)
     private String phone;
-    private int age;
+    @Column(nullable = true)
+    private Integer age;
 
     @Column(name = "lgpd_consent", nullable = false)
     private boolean lgpdConsent = false;
