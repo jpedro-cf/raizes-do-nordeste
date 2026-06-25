@@ -31,12 +31,12 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest dto) {
-        if (usersRepository.findByEmail(dto.email()).isPresent()) {
-            throw new EmailInUseException("The email provided is already in use.");
-        }
-
         if(!dto.lgpdConsent()){
             throw new InvalidArgumentException("You must consent to LGPD.");
+        }
+
+        if (usersRepository.findByEmail(dto.email()).isPresent()) {
+            throw new EmailInUseException("The email provided is already in use.");
         }
 
         var user = User.builder()
