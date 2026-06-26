@@ -12,7 +12,7 @@ public class InvalidArgumentException extends AppException {
     public ProblemDetail toProblemDetail(){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
 
-        problem.setTitle("Invalid argument.");
+        problem.setTitle("INVALID_ARGUMENT");
         problem.setDetail(this.getMessage());
 
         return problem;

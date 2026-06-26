@@ -11,7 +11,7 @@ public class NotFoundException extends AppException{
     public ProblemDetail toProblemDetail(){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
 
-        problem.setTitle("Resource not found.");
+        problem.setTitle("RESOURCE_NOT_FOUND");
         problem.setDetail(this.getMessage());
 
         return problem;

@@ -12,7 +12,7 @@ public class ForbiddenException extends AppException{
     public ProblemDetail toProblemDetail(){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
 
-        problem.setTitle("Forbidden Access.");
+        problem.setTitle("FORBIDDEN_ACCESS");
         problem.setDetail(this.getMessage());
 
         return problem;

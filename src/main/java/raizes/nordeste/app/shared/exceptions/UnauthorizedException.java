@@ -12,7 +12,7 @@ public class UnauthorizedException extends AppException{
     public ProblemDetail toProblemDetail(){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
 
-        problem.setTitle("Unauthorized.");
+        problem.setTitle("UNAUTHORIZED");
         problem.setDetail(this.getMessage());
 
         return problem;

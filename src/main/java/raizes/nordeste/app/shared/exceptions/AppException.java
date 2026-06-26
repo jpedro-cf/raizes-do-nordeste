@@ -10,7 +10,7 @@ public class AppException extends RuntimeException{
     public ProblemDetail toProblemDetail(){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        problem.setTitle("Internal Server Error.");
+        problem.setTitle("INTERNAL_SERVER_ERROR");
 
         return problem;
     }
