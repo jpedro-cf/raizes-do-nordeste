@@ -10,11 +10,11 @@ import java.math.BigInteger;
 import java.time.Instant;
 
 @Entity
-@Table(name = "product_units",
+@Table(name = "stock_items",
         uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "unit_id"}))
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class ProductUnit {
+public class StockItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,7 +27,7 @@ public class ProductUnit {
     private Unit unit;
 
     @Column(nullable = false)
-    private Long amount;
+    private Long amountInStock;
 
     @Column(nullable = false)
     private BigInteger price;

@@ -28,5 +28,5 @@ public class Unit {
 
     @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<ProductUnit> productUnits = new ArrayList<>();
+    private List<StockItem> stockItems = new ArrayList<>();
 }

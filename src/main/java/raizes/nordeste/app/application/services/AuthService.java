@@ -36,7 +36,7 @@ public class AuthService {
         }
 
         if (usersRepository.findByEmail(dto.email()).isPresent()) {
-            throw new EmailInUseException("The email provided is already in use.");
+            throw new EmailInUseException();
         }
 
         var user = User.builder()
