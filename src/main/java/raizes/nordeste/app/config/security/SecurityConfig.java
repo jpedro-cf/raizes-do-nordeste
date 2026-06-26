@@ -51,7 +51,7 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable);
 
-        http.addFilterBefore(new BearerTokenAuthenticationFilter(manager), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new BearerTokenAuthenticationFilter(manager), UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
@@ -59,8 +59,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/units/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/stock/**").permitAll()
                         .anyRequest().authenticated()
-        )
-        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        );
 
         http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

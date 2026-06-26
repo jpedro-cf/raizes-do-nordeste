@@ -23,7 +23,10 @@ public class StockService {
 
     @Transactional
     public StockItem create(CreateStockItemRequest request) {
-        if (stockRepository.existsByProductIdAndUnitId(request.productId(), request.unitId())) {
+        var stockItem = stockRepository
+                .findByProductIdAndUnitId(request.productId(), request.unitId());
+
+        if (stockItem.isPresent()) {
             throw new ProductAlreadyInUnitException();
         }
 
@@ -33,13 +36,13 @@ public class StockService {
         var unit = unitRepository.findById(request.unitId())
                 .orElseThrow(() -> new NotFoundException("Unit not found with this id."));
 
-        var stockItem = new StockItem();
-        stockItem.setProduct(product);
-        stockItem.setUnit(unit);
-        stockItem.setAmountInStock(request.amount());
-        stockItem.setPrice(request.price());
+        var item = new StockItem();
+        item.setProduct(product);
+        item.setUnit(unit);
+        item.setAmountInStock(request.amount());
+        item.setPrice(request.price());
 
-        return stockRepository.save(stockItem);
+        return stockRepository.save(item);
     }
 
     public Page<StockItem> findAllByUnit(Long unitId, Pageable pageable) {
