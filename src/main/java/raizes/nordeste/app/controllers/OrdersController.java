@@ -25,6 +25,13 @@ public class OrdersController {
         return ResponseEntity.ok(ordersService.create(request));
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<Order>> findAll(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(ordersService.findAll(pageable));
+    }
+
     @GetMapping("/unit/{unitId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<Order>> findAllByUnit(

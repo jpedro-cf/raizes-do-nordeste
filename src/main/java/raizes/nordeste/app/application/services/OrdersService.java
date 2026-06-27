@@ -86,13 +86,17 @@ public class OrdersService {
         return ordersRepository.findAllByUnitId(unitId, pageable);
     }
 
+    public Page<Order> findAll(Pageable pageable) {
+        return ordersRepository.findAll(pageable);
+    }
+
     public Order findById(Long id) {
         var auth = (BearerTokenAuthentication) SecurityContextHolder
                 .getContext()
                 .getAuthentication();
 
         if (auth == null) {
-            throw new ForbiddenException("You must be authenticated to order something.");
+            throw new ForbiddenException("You must be authenticated to view this order.");
         }
 
         var order = ordersRepository.findById(id)
