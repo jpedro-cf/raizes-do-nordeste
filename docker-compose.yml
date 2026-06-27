@@ -9,12 +9,32 @@ services:
       POSTGRES_USER: "${DB_USER:-user}"
       POSTGRES_PASSWORD: "${DB_PASSWORD:-password}"
       POSTGRES_DB: "${DB_NAME:-raizes_nordeste}"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-raizes_nordeste}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - raizes-nordeste
+  app:
+   build: .
+   container_name: raizes_app
+   ports:
+     - "8080:8080"
+   environment:
+      DB_HOST: postgres_db
+      DB_USER: "${DB_USER:-user}"
+      DB_PASSWORD: "${DB_PASSWORD:-password}"
+      DB_NAME: "${DB_NAME:-raizes_nordeste}"
+   depends_on:
+      db:
+        condition: service_healthy
+   networks:
+     - raizes-nordeste
 
 volumes:
   postgres_data:
