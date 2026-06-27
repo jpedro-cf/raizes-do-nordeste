@@ -5,18 +5,23 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import raizes.nordeste.app.shared.exceptions.UnauthorizedException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
 public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
     private final AuthenticationManager manager;
+    private final ObjectMapper objectMapper;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -34,8 +39,18 @@ public class BearerTokenAuthenticationFilter extends OncePerRequestFilter {
             var authenticated = manager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authenticated);
         } catch (Exception e) {
-            throw new UnauthorizedException("Invalid token or it was not provided in the request.");
+//            writeUnauthorized(response, e.getMessage());
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void writeUnauthorized(HttpServletResponse response, String detail) throws IOException {
+        var pb = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        pb.setTitle("UNAUTHORIZED");
+        pb.setDetail(detail != null ? detail : "Invalid or missing token.");
+
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write(objectMapper.writeValueAsString(pb));
     }
 }
