@@ -18,7 +18,7 @@ public class MockPaymentGateway implements PaymentGateway {
         var reachedLimit = request.order().getTotal().compareTo(CARD_LIMIT) > 0;
         if(request.method().equals(PaymentMethod.CARD) && reachedLimit) {
             return new PaymentGatewayResponse(false,
-                    "The limit of CARD transactions is R$100,00.");
+                    "The limit for CARD transactions is R$100,00.");
         }
 
         return new PaymentGatewayResponse(true, "Payment processed successfully.");
