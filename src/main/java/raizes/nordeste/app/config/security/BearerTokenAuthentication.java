@@ -24,7 +24,7 @@ public class BearerTokenAuthentication implements Authentication {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (user == null) return List.of();
-        return List.of(new SimpleGrantedAuthority(user.getRole().getValue()));
+        return List.of(new SimpleGrantedAuthority(user.getRole().getValue().toUpperCase()));
     }
 
     @Override

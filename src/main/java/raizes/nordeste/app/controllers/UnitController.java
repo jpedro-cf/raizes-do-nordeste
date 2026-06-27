@@ -20,7 +20,7 @@ public class UnitController {
     private final UnitService unitService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Unit> create(@RequestBody @Valid CreateUnitRequest request) {
         return ResponseEntity.ok(unitService.create(request));
     }
@@ -37,7 +37,7 @@ public class UnitController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         unitService.delete(id);
         return ResponseEntity.noContent().build();

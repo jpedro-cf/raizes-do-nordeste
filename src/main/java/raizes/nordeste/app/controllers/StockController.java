@@ -21,7 +21,7 @@ public class StockController {
     private final StockService stockService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<StockItem> create(@RequestBody @Valid CreateStockItemRequest request) {
         return ResponseEntity.ok(stockService.create(request));
     }
@@ -34,14 +34,14 @@ public class StockController {
     }
 
     @PatchMapping("{stockItemId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<StockItem> update(@PathVariable Long stockItemId,
                                                       @RequestBody @Valid UpdateStockItemRequest request) {
         return ResponseEntity.ok(stockService.update(stockItemId, request));
     }
 
     @DeleteMapping("{stockItemId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long stockItemId) {
         stockService.delete(stockItemId);
         return ResponseEntity.noContent().build();

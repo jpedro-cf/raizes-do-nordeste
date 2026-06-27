@@ -33,6 +33,9 @@ public class User {
     @Column(nullable = true)
     private Integer age;
 
+    @Column(nullable = false)
+    private Long points = 0L;
+
     @Column(name = "lgpd_consent", nullable = false)
     private boolean lgpdConsent = false;
 

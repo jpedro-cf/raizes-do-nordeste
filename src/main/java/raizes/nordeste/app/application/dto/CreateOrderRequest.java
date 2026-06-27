@@ -13,5 +13,6 @@ public record CreateOrderRequest(
         @NotNull
         @ValidEnum(enumClass = CanalPedido.class, message = "Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP")
         String canalPedido,
+        Long pointsToApply,
         @NotEmpty List<@Valid OrderItemRequest> items
 ) {}

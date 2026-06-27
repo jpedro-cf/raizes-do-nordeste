@@ -35,6 +35,12 @@ public class Order {
     @Column(nullable = false)
     private BigInteger total = BigInteger.ZERO;
 
+    @Column(name = "sub_total", nullable = false)
+    private BigInteger subTotal = BigInteger.ZERO;
+
+    @Column(nullable = false)
+    private BigInteger discount = BigInteger.ZERO;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 

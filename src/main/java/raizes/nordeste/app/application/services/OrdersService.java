@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.CreateOrderRequest;
@@ -12,10 +11,8 @@ import raizes.nordeste.app.application.dto.UpdateOrderStatusRequest;
 import raizes.nordeste.app.config.security.BearerTokenAuthentication;
 import raizes.nordeste.app.domain.entities.*;
 import raizes.nordeste.app.domain.exceptions.ProductOutOfStockException;
-import raizes.nordeste.app.infra.repositories.OrdersRepository;
-import raizes.nordeste.app.infra.repositories.StockRepository;
-import raizes.nordeste.app.infra.repositories.UnitRepository;
-import raizes.nordeste.app.infra.repositories.UsersRepository;
+import raizes.nordeste.app.infra.repositories.*;
+import raizes.nordeste.app.shared.exceptions.ConflictException;
 import raizes.nordeste.app.shared.exceptions.ForbiddenException;
 import raizes.nordeste.app.shared.exceptions.InvalidArgumentException;
 import raizes.nordeste.app.shared.exceptions.NotFoundException;
@@ -26,11 +23,12 @@ import java.util.ArrayList;
 @Service
 @RequiredArgsConstructor
 public class OrdersService {
-
     private final OrdersRepository ordersRepository;
     private final StockRepository stockRepository;
     private final UnitRepository unitRepository;
     private final UsersRepository usersRepository;
+    private final LoyaltyService loyaltyService;
+    private final PointsTransactionRepository pointsTransactionRepository;
 
     @Transactional
     public Order create(CreateOrderRequest request) {
@@ -42,13 +40,10 @@ public class OrdersService {
             throw new ForbiddenException("You must be authenticated to order something.");
         }
 
-        var userId = auth.getPrincipal();
+        var user = auth.getUser();
 
         var unit = unitRepository.findById(request.unitId())
                 .orElseThrow(() -> new NotFoundException("Unit with this id not found."));
-
-        var user = usersRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with this id not found."));
 
         var order = new Order();
         order.setUnit(unit);
@@ -77,9 +72,37 @@ public class OrdersService {
                 .reduce(BigInteger.ZERO, BigInteger::add);
 
         order.setItems(new ArrayList<>(items));
+        order.setSubTotal(total);
         order.setTotal(total);
+        ordersRepository.save(order);
 
-        return ordersRepository.save(order);
+        if (request.pointsToApply() != null && request.pointsToApply() > 0) {
+            if (user.getPoints() < request.pointsToApply()) {
+                throw new ConflictException("Insufficient loyalty points.");
+            }
+
+            var discount = BigInteger.valueOf(request.pointsToApply());
+
+            if (discount.compareTo(order.getTotal()) > 0) {
+                throw new ConflictException("The discount cannot exceed the order total.");
+            }
+
+            order.setTotal(order.getTotal().subtract(discount));
+            order.setDiscount(discount);
+            user.setPoints(user.getPoints() - request.pointsToApply());
+            usersRepository.save(user);
+
+            var transaction = new PointsTransaction();
+            transaction.setUser(user);
+            transaction.setOrder(order);
+            transaction.setType(PointsTransactionType.REDEEMED);
+            transaction.setPoints(request.pointsToApply());
+            pointsTransactionRepository.save(transaction);
+
+            ordersRepository.save(order);
+        }
+
+        return order;
     }
 
     public Page<Order> findAllByUnit(Long unitId, Pageable pageable) {

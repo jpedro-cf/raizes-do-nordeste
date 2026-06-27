@@ -29,7 +29,7 @@ public class OrdersController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Page<Order>> findAll(
             @RequestParam(required = false)
             @ValidEnum(enumClass = CanalPedido.class, message = "Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP")
@@ -39,7 +39,7 @@ public class OrdersController {
     }
 
     @GetMapping("/unit/{unitId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Page<Order>> findAllByUnit(
             @PathVariable Long unitId,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -52,7 +52,7 @@ public class OrdersController {
     }
 
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Order> updateStatus(@PathVariable Long id,
                                                       @RequestBody @Valid UpdateOrderStatusRequest request) {
         return ResponseEntity.ok(ordersService.updateStatus(id, request));

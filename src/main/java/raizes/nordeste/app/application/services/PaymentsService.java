@@ -27,6 +27,7 @@ public class PaymentsService {
     private final PaymentsRepository paymentsRepository;
     private final OrdersRepository ordersRepository;
     private final PaymentGateway paymentGateway;
+    private final LoyaltyService loyaltyService;
 
     @Transactional(dontRollbackOn = {PaymentException.class})
     public PaymentResponse process(ProcessPaymentRequest request) {
@@ -60,6 +61,7 @@ public class PaymentsService {
 
         payment.setStatus(PaymentStatus.APPROVED);
         order.setStatus(OrderStatus.CONFIRMED);
+        loyaltyService.earnPoints(order);
 
         return PaymentResponse.from(paymentsRepository.save(payment));
     }

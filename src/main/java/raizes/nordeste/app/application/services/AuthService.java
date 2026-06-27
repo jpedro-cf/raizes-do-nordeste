@@ -45,6 +45,7 @@ public class AuthService {
                 .password(passwordHasher.hash(dto.password()))
                 .phone(dto.phone())
                 .age(dto.age())
+                .points(0L)
                 .lgpdConsent(true)
                 .role(UserRole.CUSTOMER)
                 .createdAt(Instant.now())
