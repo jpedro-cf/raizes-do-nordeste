@@ -86,7 +86,11 @@ public class OrdersService {
         return ordersRepository.findAllByUnitId(unitId, pageable);
     }
 
-    public Page<Order> findAll(Pageable pageable) {
+    public Page<Order> findAll(String canalPedido, Pageable pageable) {
+        if(canalPedido != null) {
+            return ordersRepository.findAllByCanalPedido(
+                    CanalPedido.valueOf(canalPedido.toUpperCase()), pageable);
+        }
         return ordersRepository.findAll(pageable);
     }
 

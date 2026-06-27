@@ -8,10 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raizes.nordeste.app.application.dto.CreateOrderRequest;
 import raizes.nordeste.app.application.dto.UpdateOrderStatusRequest;
 import raizes.nordeste.app.application.services.OrdersService;
+import raizes.nordeste.app.config.validation.ValidEnum;
+import raizes.nordeste.app.domain.entities.CanalPedido;
 import raizes.nordeste.app.domain.entities.Order;
 
 @RestController
@@ -28,8 +31,11 @@ public class OrdersController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<Order>> findAll(
+            @RequestParam(required = false)
+            @ValidEnum(enumClass = CanalPedido.class, message = "Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP")
+            String canalPedido,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(ordersService.findAll(pageable));
+        return ResponseEntity.ok(ordersService.findAll(canalPedido, pageable));
     }
 
     @GetMapping("/unit/{unitId}")
