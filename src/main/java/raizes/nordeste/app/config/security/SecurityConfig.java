@@ -1,5 +1,6 @@
 package raizes.nordeste.app.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -31,12 +32,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import tools.jackson.databind.ObjectMapper;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.UUID;
 
 @Configuration
 @EnableWebSecurity
@@ -71,7 +70,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/units/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/stock/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/stock/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml").permitAll()
                         .anyRequest().authenticated()
         );
 

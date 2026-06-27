@@ -11,7 +11,7 @@ public class PaymentException extends AppException {
 
     @Override
     public ProblemDetail toProblemDetail() {
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_CONTENT);
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
 
         problem.setTitle("PAYMENT_ERROR");
         problem.setDetail(getMessage());
