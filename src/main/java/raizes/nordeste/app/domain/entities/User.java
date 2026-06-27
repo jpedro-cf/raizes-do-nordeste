@@ -37,7 +37,7 @@ public class User {
     private Long points = 0L;
 
     @Column(name = "lgpd_consent", nullable = false)
-    private boolean lgpdConsent = false;
+    private Boolean lgpdConsent = false;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();

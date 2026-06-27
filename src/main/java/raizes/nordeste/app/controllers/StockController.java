@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import raizes.nordeste.app.application.dto.CreateStockItemRequest;
+import raizes.nordeste.app.application.dto.StockItemResponse;
 import raizes.nordeste.app.application.dto.UpdateStockItemRequest;
 import raizes.nordeste.app.application.services.StockService;
 import raizes.nordeste.app.domain.entities.StockItem;
@@ -27,7 +28,7 @@ public class StockController {
     }
 
     @GetMapping("{unitId}")
-    public ResponseEntity<Page<StockItem>> findAllByUnit(
+    public ResponseEntity<Page<StockItemResponse>> findAllByUnit(
             @PathVariable Long unitId,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(stockService.findAllByUnit(unitId, pageable));

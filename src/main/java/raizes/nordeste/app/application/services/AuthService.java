@@ -9,6 +9,7 @@ import raizes.nordeste.app.application.TokenService;
 import raizes.nordeste.app.application.dto.AuthResponse;
 import raizes.nordeste.app.application.dto.LoginRequest;
 import raizes.nordeste.app.application.dto.RegisterRequest;
+import raizes.nordeste.app.application.dto.UserResponse;
 import raizes.nordeste.app.domain.entities.User;
 import raizes.nordeste.app.domain.entities.UserRole;
 import raizes.nordeste.app.domain.exceptions.EmailInUseException;
@@ -59,7 +60,7 @@ public class AuthService {
                 "email", savedUser.getEmail()
         ), Duration.ofDays(1).getSeconds());
 
-        return new AuthResponse(token, user.getId(), user.getName(), user.getEmail());
+        return new AuthResponse(token, UserResponse.from(savedUser));
     }
 
     public AuthResponse login(LoginRequest dto) {
@@ -76,6 +77,6 @@ public class AuthService {
                 "email", user.getEmail()
         ), Duration.ofDays(1).getSeconds());
 
-        return new AuthResponse(token, user.getId(), user.getName(), user.getEmail());
+        return new AuthResponse(token, UserResponse.from(user));
     }
 }

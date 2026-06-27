@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.CreateOrderRequest;
+import raizes.nordeste.app.application.dto.OrderResponse;
 import raizes.nordeste.app.application.dto.UpdateOrderStatusRequest;
 import raizes.nordeste.app.config.security.BearerTokenAuthentication;
 import raizes.nordeste.app.domain.entities.*;
@@ -31,7 +32,7 @@ public class OrdersService {
     private final PointsTransactionRepository pointsTransactionRepository;
 
     @Transactional
-    public Order create(CreateOrderRequest request) {
+    public OrderResponse create(CreateOrderRequest request) {
         var auth = (BearerTokenAuthentication) SecurityContextHolder
                 .getContext()
                 .getAuthentication();
@@ -102,22 +103,23 @@ public class OrdersService {
             ordersRepository.save(order);
         }
 
-        return order;
+        return OrderResponse.from(order);
     }
 
-    public Page<Order> findAllByUnit(Long unitId, Pageable pageable) {
-        return ordersRepository.findAllByUnitId(unitId, pageable);
+    public Page<OrderResponse> findAllByUnit(Long unitId, Pageable pageable) {
+        return ordersRepository.findAllByUnitId(unitId, pageable).map(OrderResponse::from);
     }
 
-    public Page<Order> findAll(String canalPedido, Pageable pageable) {
+    public Page<OrderResponse> findAll(String canalPedido, Pageable pageable) {
         if(canalPedido != null) {
             return ordersRepository.findAllByCanalPedido(
-                    CanalPedido.valueOf(canalPedido.toUpperCase()), pageable);
+                    CanalPedido.valueOf(canalPedido.toUpperCase()), pageable)
+                    .map(OrderResponse::from);
         }
-        return ordersRepository.findAll(pageable);
+        return ordersRepository.findAll(pageable).map(OrderResponse::from);
     }
 
-    public Order findById(Long id) {
+    public OrderResponse findById(Long id) {
         var auth = (BearerTokenAuthentication) SecurityContextHolder
                 .getContext()
                 .getAuthentication();
@@ -136,11 +138,11 @@ public class OrdersService {
             throw new ForbiddenException("You can't view this order.");
         }
 
-        return order;
+        return OrderResponse.from(order);
     }
 
     @Transactional
-    public Order updateStatus(Long id, UpdateOrderStatusRequest request) {
+    public OrderResponse updateStatus(Long id, UpdateOrderStatusRequest request) {
         var order = ordersRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order not found with this id."));
 
@@ -149,7 +151,7 @@ public class OrdersService {
         }
 
         order.setStatus(OrderStatus.valueOf(request.status().toUpperCase()));
-        return ordersRepository.save(order);
+        return OrderResponse.from(ordersRepository.save(order));
     }
 
     @Transactional

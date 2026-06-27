@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import raizes.nordeste.app.application.dto.CreateOrderRequest;
+import raizes.nordeste.app.application.dto.OrderResponse;
 import raizes.nordeste.app.application.dto.UpdateOrderStatusRequest;
 import raizes.nordeste.app.application.services.OrdersService;
 import raizes.nordeste.app.config.validation.ValidEnum;
@@ -24,13 +25,13 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @PostMapping
-    public ResponseEntity<Order> create(@RequestBody @Valid CreateOrderRequest request) {
+    public ResponseEntity<OrderResponse> create(@RequestBody @Valid CreateOrderRequest request) {
         return ResponseEntity.ok(ordersService.create(request));
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Page<Order>> findAll(
+    public ResponseEntity<Page<OrderResponse>> findAll(
             @RequestParam(required = false)
             @ValidEnum(enumClass = CanalPedido.class, message = "Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP")
             String canalPedido,
@@ -40,20 +41,20 @@ public class OrdersController {
 
     @GetMapping("/unit/{unitId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Page<Order>> findAllByUnit(
+    public ResponseEntity<Page<OrderResponse>> findAllByUnit(
             @PathVariable Long unitId,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(ordersService.findAllByUnit(unitId, pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> findById(@PathVariable Long id) {
+    public ResponseEntity<OrderResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(ordersService.findById(id));
     }
 
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Order> updateStatus(@PathVariable Long id,
+    public ResponseEntity<OrderResponse> updateStatus(@PathVariable Long id,
                                                       @RequestBody @Valid UpdateOrderStatusRequest request) {
         return ResponseEntity.ok(ordersService.updateStatus(id, request));
     }

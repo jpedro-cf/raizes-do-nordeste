@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.CreateStockItemRequest;
+import raizes.nordeste.app.application.dto.StockItemResponse;
 import raizes.nordeste.app.application.dto.UpdateStockItemRequest;
 import raizes.nordeste.app.domain.entities.StockItem;
 import raizes.nordeste.app.domain.exceptions.ProductAlreadyInUnitException;
@@ -45,8 +46,8 @@ public class StockService {
         return stockRepository.save(item);
     }
 
-    public Page<StockItem> findAllByUnit(Long unitId, Pageable pageable) {
-        return stockRepository.findAllByUnitId(unitId, pageable);
+    public Page<StockItemResponse> findAllByUnit(Long unitId, Pageable pageable) {
+        return stockRepository.findAllByUnitId(unitId, pageable).map(StockItemResponse::from);
     }
 
     public StockItem findById(Long id) {
