@@ -52,7 +52,8 @@ public class PaymentsService {
 
         if (!gatewayResponse.approved()) {
             payment.setStatus(PaymentStatus.REJECTED);
-            ordersRepository.save(order);
+            order.setStatus(OrderStatus.CANCELLED);
+            paymentsRepository.save(payment);
 
             throw new PaymentException(gatewayResponse.message());
         }
