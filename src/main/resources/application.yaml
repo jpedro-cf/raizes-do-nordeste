@@ -22,3 +22,5 @@ spring:
 jwt:
   # random fallback value in case you missed
   secret: ${SECRET:2bd3855646db537030105d119dbdf37d39b16fb174dafbaa1424d8441b1671a9}
+admin:
+  password: ${ADMIN_PASSWORD:password}

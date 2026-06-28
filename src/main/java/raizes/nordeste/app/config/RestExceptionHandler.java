@@ -31,7 +31,7 @@ public class RestExceptionHandler {
                 .toList();
 
         var pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-        pb.setTitle("Invalid Params.");
+        pb.setTitle("INVALID_PARAMS");
         pb.setProperty("detail", errors);
 
         return pb;

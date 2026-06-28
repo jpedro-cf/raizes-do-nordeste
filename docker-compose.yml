@@ -30,6 +30,7 @@ services:
       DB_USER: "${DB_USER:-user}"
       DB_PASSWORD: "${DB_PASSWORD:-password}"
       DB_NAME: "${DB_NAME:-raizes_nordeste}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-password}"
    depends_on:
       db:
         condition: service_healthy
