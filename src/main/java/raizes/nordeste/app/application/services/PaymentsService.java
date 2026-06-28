@@ -28,6 +28,7 @@ public class PaymentsService {
     private final OrdersRepository ordersRepository;
     private final PaymentGateway paymentGateway;
     private final LoyaltyService loyaltyService;
+    private final OrdersService ordersService;
 
     @Transactional(dontRollbackOn = {PaymentException.class})
     public PaymentResponse process(ProcessPaymentRequest request) {
@@ -53,8 +54,8 @@ public class PaymentsService {
 
         if (!gatewayResponse.approved()) {
             payment.setStatus(PaymentStatus.REJECTED);
-            order.setStatus(OrderStatus.CANCELLED);
             paymentsRepository.save(payment);
+            ordersService.cancel(order.getId());
 
             throw new PaymentException(gatewayResponse.message());
         }

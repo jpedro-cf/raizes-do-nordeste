@@ -178,7 +178,7 @@ public class OrdersService {
                 .orElseThrow(() -> new NotFoundException("Order not found with this id."));
 
         if (order.getStatus() == OrderStatus.DELIVERED) {
-            throw new InvalidArgumentException("You can't cancel an order that has already been delivered.");
+            throw new ConflictException("You can't cancel an order that has already been delivered.");
         }
 
         order.getItems().forEach(item -> {
