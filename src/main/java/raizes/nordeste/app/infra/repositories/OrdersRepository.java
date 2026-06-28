@@ -8,5 +8,6 @@ import raizes.nordeste.app.domain.entities.Order;
 
 public interface OrdersRepository extends JpaRepository<Order, Long> {
     Page<Order> findAllByUnitId(Long unitId, Pageable pageable);
+    Page<Order> findAllByUnitIdAndCanalPedido(Long unitId, CanalPedido canalPedido, Pageable pageable);
     Page<Order> findAllByCanalPedido(CanalPedido canalPedido, Pageable pageable);
 }

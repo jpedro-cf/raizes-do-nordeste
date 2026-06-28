@@ -33,7 +33,7 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest dto) {
         if(!dto.lgpdConsent()){
-            throw new InvalidArgumentException("You must consent to LGPD.");
+            throw new InvalidArgumentException("You must consent to our terms of agreement (lgdpConsent).");
         }
 
         if (usersRepository.findByEmail(dto.email()).isPresent()) {

@@ -33,7 +33,6 @@ public class OrdersController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Page<OrderResponse>> findAll(
             @RequestParam(required = false)
-            @ValidEnum(enumClass = CanalPedido.class, message = "Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP")
             String canalPedido,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(ordersService.findAll(canalPedido, pageable));
@@ -43,8 +42,10 @@ public class OrdersController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Page<OrderResponse>> findAllByUnit(
             @PathVariable Long unitId,
+            @RequestParam(required = false)
+            String canalPedido,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(ordersService.findAllByUnit(unitId, pageable));
+        return ResponseEntity.ok(ordersService.findAllByUnit(unitId, canalPedido, pageable));
     }
 
     @GetMapping("/{id}")

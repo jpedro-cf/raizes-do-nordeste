@@ -20,6 +20,7 @@ import raizes.nordeste.app.shared.exceptions.NotFoundException;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -106,12 +107,29 @@ public class OrdersService {
         return OrderResponse.from(order);
     }
 
-    public Page<OrderResponse> findAllByUnit(Long unitId, Pageable pageable) {
+    public Page<OrderResponse> findAllByUnit(Long unitId, String canalPedido, Pageable pageable) {
+        if(canalPedido != null){
+            var validEnum = Arrays.stream(CanalPedido.values())
+                    .anyMatch(e -> e.getValue().equals(canalPedido));
+            if(!validEnum){
+                throw new InvalidArgumentException("Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP");
+            }
+            return ordersRepository
+                    .findAllByUnitIdAndCanalPedido(unitId,
+                            CanalPedido.valueOf(canalPedido.toUpperCase()),
+                            pageable)
+                    .map(OrderResponse::from);
+        }
         return ordersRepository.findAllByUnitId(unitId, pageable).map(OrderResponse::from);
     }
 
     public Page<OrderResponse> findAll(String canalPedido, Pageable pageable) {
         if(canalPedido != null) {
+            var validEnum = Arrays.stream(CanalPedido.values())
+                    .anyMatch(e -> e.getValue().equals(canalPedido));
+            if(!validEnum){
+                throw new InvalidArgumentException("Invalid value. Accepted values: APP, TOTEM, BALCAO, PICKUP");
+            }
             return ordersRepository.findAllByCanalPedido(
                     CanalPedido.valueOf(canalPedido.toUpperCase()), pageable)
                     .map(OrderResponse::from);

@@ -1,6 +1,7 @@
 package raizes.nordeste.app.application.dto;
 
 import raizes.nordeste.app.domain.entities.Payment;
+import raizes.nordeste.app.domain.entities.PaymentMethod;
 import raizes.nordeste.app.domain.entities.PaymentStatus;
 
 import java.math.BigInteger;
@@ -11,7 +12,9 @@ public record PaymentResponse(
         BigInteger total,
         Long orderId,
         Long userId,
+        Long unitId,
         PaymentStatus status,
+        PaymentMethod paymentMethod,
         Long pointsEarned,
         Instant timestamp) {
 
@@ -24,7 +27,9 @@ public record PaymentResponse(
                 payment.getOrder().getTotal(),
                 payment.getOrder().getId(),
                 payment.getOrder().getUser().getId(),
+                payment.getOrder().getUnit().getId(),
                 payment.getStatus(),
+                payment.getMethod(),
                 points <= 0 || payment.getStatus().equals(PaymentStatus.REJECTED) ? 0 : points,
                 payment.getTimestamp());
     }
