@@ -3,7 +3,7 @@ package raizes.nordeste.app.application.dto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import raizes.nordeste.app.config.validation.ValidEnum;
+import raizes.nordeste.app.api.config.validation.ValidEnum;
 import raizes.nordeste.app.domain.entities.CanalPedido;
 
 import java.util.List;

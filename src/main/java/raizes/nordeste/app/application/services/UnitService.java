@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.CreateUnitRequest;
 import raizes.nordeste.app.domain.entities.Unit;
 import raizes.nordeste.app.infra.repositories.UnitRepository;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 
 @Service

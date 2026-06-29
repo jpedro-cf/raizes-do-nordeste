@@ -13,7 +13,7 @@ import raizes.nordeste.app.domain.exceptions.ProductAlreadyInUnitException;
 import raizes.nordeste.app.infra.repositories.ProductsRepository;
 import raizes.nordeste.app.infra.repositories.StockRepository;
 import raizes.nordeste.app.infra.repositories.UnitRepository;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 @Service
 @RequiredArgsConstructor

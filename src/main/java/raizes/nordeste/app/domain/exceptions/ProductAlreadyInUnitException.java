@@ -2,7 +2,7 @@ package raizes.nordeste.app.domain.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import raizes.nordeste.app.shared.exceptions.AppException;
+import raizes.nordeste.app.api.exceptions.AppException;
 
 public class ProductAlreadyInUnitException extends AppException {
     public ProductAlreadyInUnitException() {

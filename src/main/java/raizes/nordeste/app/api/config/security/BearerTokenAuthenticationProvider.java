@@ -1,4 +1,4 @@
-package raizes.nordeste.app.config.security;
+package raizes.nordeste.app.api.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import raizes.nordeste.app.application.TokenService;
 import raizes.nordeste.app.infra.repositories.UsersRepository;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 @Component
 @RequiredArgsConstructor

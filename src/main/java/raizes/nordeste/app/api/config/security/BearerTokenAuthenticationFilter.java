@@ -1,4 +1,4 @@
-package raizes.nordeste.app.config.security;
+package raizes.nordeste.app.api.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;

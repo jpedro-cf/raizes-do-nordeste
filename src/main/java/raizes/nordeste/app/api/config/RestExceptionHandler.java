@@ -1,4 +1,4 @@
-package raizes.nordeste.app.config;
+package raizes.nordeste.app.api.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import raizes.nordeste.app.shared.exceptions.AppException;
+import raizes.nordeste.app.api.exceptions.AppException;
 
 import java.util.Map;
 

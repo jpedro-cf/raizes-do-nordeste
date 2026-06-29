@@ -1,4 +1,4 @@
-package raizes.nordeste.app.shared.exceptions;
+package raizes.nordeste.app.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

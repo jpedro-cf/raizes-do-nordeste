@@ -1,8 +1,7 @@
 package raizes.nordeste.app.application.dto;
 
 import jakarta.validation.constraints.NotNull;
-import raizes.nordeste.app.config.validation.ValidEnum;
-import raizes.nordeste.app.domain.entities.OrderStatus;
+import raizes.nordeste.app.api.config.validation.ValidEnum;
 import raizes.nordeste.app.domain.entities.PaymentMethod;
 
 public record ProcessPaymentRequest(

@@ -1,4 +1,4 @@
-package raizes.nordeste.app.config.validation;
+package raizes.nordeste.app.api.config.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

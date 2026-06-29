@@ -2,7 +2,6 @@ package raizes.nordeste.app.application.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.Hasher;
 import raizes.nordeste.app.application.TokenService;
@@ -14,14 +13,13 @@ import raizes.nordeste.app.domain.entities.User;
 import raizes.nordeste.app.domain.entities.UserRole;
 import raizes.nordeste.app.domain.exceptions.EmailInUseException;
 import raizes.nordeste.app.infra.repositories.UsersRepository;
-import raizes.nordeste.app.shared.exceptions.ForbiddenException;
-import raizes.nordeste.app.shared.exceptions.InvalidArgumentException;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
+import raizes.nordeste.app.api.exceptions.ForbiddenException;
+import raizes.nordeste.app.api.exceptions.InvalidArgumentException;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

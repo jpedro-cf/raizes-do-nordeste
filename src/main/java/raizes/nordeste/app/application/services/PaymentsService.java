@@ -17,9 +17,7 @@ import raizes.nordeste.app.domain.exceptions.OrderStatusInvalidException;
 import raizes.nordeste.app.domain.exceptions.PaymentException;
 import raizes.nordeste.app.infra.repositories.OrdersRepository;
 import raizes.nordeste.app.infra.repositories.PaymentsRepository;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
-
-import java.util.List;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 @Service
 @RequiredArgsConstructor

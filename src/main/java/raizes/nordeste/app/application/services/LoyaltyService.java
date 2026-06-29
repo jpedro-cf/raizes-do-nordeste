@@ -2,12 +2,10 @@ package raizes.nordeste.app.application.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.LoyaltyResponse;
-import raizes.nordeste.app.config.security.BearerTokenAuthentication;
+import raizes.nordeste.app.api.config.security.BearerTokenAuthentication;
 import raizes.nordeste.app.domain.entities.Order;
 import raizes.nordeste.app.domain.entities.PointsTransaction;
 import raizes.nordeste.app.domain.entities.PointsTransactionResponse;
@@ -15,7 +13,7 @@ import raizes.nordeste.app.domain.entities.PointsTransactionType;
 import raizes.nordeste.app.infra.repositories.OrdersRepository;
 import raizes.nordeste.app.infra.repositories.PointsTransactionRepository;
 import raizes.nordeste.app.infra.repositories.UsersRepository;
-import raizes.nordeste.app.shared.exceptions.ForbiddenException;
+import raizes.nordeste.app.api.exceptions.ForbiddenException;
 
 import java.math.BigInteger;
 

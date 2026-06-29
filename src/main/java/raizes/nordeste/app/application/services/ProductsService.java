@@ -4,12 +4,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import raizes.nordeste.app.application.dto.CreateProductRequest;
 import raizes.nordeste.app.domain.entities.Product;
 import raizes.nordeste.app.infra.repositories.ProductsRepository;
-import raizes.nordeste.app.shared.exceptions.NotFoundException;
+import raizes.nordeste.app.api.exceptions.NotFoundException;
 
 @Service
 @RequiredArgsConstructor

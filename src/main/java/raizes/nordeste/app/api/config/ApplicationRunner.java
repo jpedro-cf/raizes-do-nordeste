@@ -1,4 +1,4 @@
-package raizes.nordeste.app.config;
+package raizes.nordeste.app.api.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

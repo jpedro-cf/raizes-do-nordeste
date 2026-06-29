@@ -1,4 +1,4 @@
-package raizes.nordeste.app.controllers;
+package raizes.nordeste.app.api.controllers;
 
 
 import jakarta.validation.Valid;
