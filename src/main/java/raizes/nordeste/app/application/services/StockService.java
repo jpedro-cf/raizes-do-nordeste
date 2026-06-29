@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import raizes.nordeste.app.api.config.audit.AuditLog;
 import raizes.nordeste.app.application.dto.CreateStockItemRequest;
 import raizes.nordeste.app.application.dto.StockItemResponse;
 import raizes.nordeste.app.application.dto.UpdateStockItemRequest;
@@ -23,7 +24,8 @@ public class StockService {
     private final UnitRepository unitRepository;
 
     @Transactional
-    public StockItem create(CreateStockItemRequest request) {
+    @AuditLog
+    public StockItemResponse create(CreateStockItemRequest request) {
         var stockItem = stockRepository
                 .findByProductIdAndUnitId(request.productId(), request.unitId());
 
@@ -43,30 +45,33 @@ public class StockService {
         item.setAmountInStock(request.amount());
         item.setPrice(request.price());
 
-        return stockRepository.save(item);
+        return StockItemResponse.from(stockRepository.save(item));
     }
 
     public Page<StockItemResponse> findAllByUnit(Long unitId, Pageable pageable) {
         return stockRepository.findAllByUnitId(unitId, pageable).map(StockItemResponse::from);
     }
 
-    public StockItem findById(Long id) {
+    public StockItemResponse findById(Long id) {
         return stockRepository.findById(id)
+                .map(StockItemResponse::from)
                 .orElseThrow(() -> new NotFoundException("Stock Item not found with this id"));
     }
 
     @Transactional
-    public StockItem update(Long id, UpdateStockItemRequest request) {
+    @AuditLog
+    public StockItemResponse update(Long id, UpdateStockItemRequest request) {
         var stockItem = stockRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Stock Item not found with this id"));
 
         stockItem.setAmountInStock(request.amount());
         stockItem.setPrice(request.price());
 
-        return stockRepository.save(stockItem);
+        return StockItemResponse.from(stockRepository.save(stockItem));
     }
 
     @Transactional
+    @AuditLog
     public void delete(Long id) {
         if (!stockRepository.existsById(id)) {
             throw new NotFoundException("Stock Item not found with this id");

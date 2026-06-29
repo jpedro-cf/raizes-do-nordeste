@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import raizes.nordeste.app.api.config.audit.AuditLog;
 import raizes.nordeste.app.application.dto.CreateProductRequest;
 import raizes.nordeste.app.domain.entities.Product;
 import raizes.nordeste.app.infra.repositories.ProductsRepository;
@@ -16,6 +17,7 @@ public class ProductsService {
     private final ProductsRepository productsRepository;
 
     @Transactional
+    @AuditLog
     public Product create(CreateProductRequest request) {
         var product = new Product();
         product.setName(request.name());
@@ -34,6 +36,7 @@ public class ProductsService {
     }
 
     @Transactional
+    @AuditLog
     public void delete(Long id) {
         if (!productsRepository.existsById(id)) {
             throw new NotFoundException("Product with this id not found");

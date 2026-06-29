@@ -23,7 +23,7 @@ public class StockController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<StockItem> create(@RequestBody @Valid CreateStockItemRequest request) {
+    public ResponseEntity<StockItemResponse> create(@RequestBody @Valid CreateStockItemRequest request) {
         return ResponseEntity.ok(stockService.create(request));
     }
 
@@ -36,7 +36,7 @@ public class StockController {
 
     @PatchMapping("{stockItemId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<StockItem> update(@PathVariable Long stockItemId,
+    public ResponseEntity<StockItemResponse> update(@PathVariable Long stockItemId,
                                                       @RequestBody @Valid UpdateStockItemRequest request) {
         return ResponseEntity.ok(stockService.update(stockItemId, request));
     }

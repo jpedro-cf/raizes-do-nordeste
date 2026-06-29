@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import raizes.nordeste.app.api.config.audit.AuditLog;
 import raizes.nordeste.app.application.dto.CreateUnitRequest;
 import raizes.nordeste.app.domain.entities.Unit;
 import raizes.nordeste.app.infra.repositories.UnitRepository;
@@ -17,6 +18,7 @@ public class UnitService {
     private final UnitRepository unitRepository;
 
     @Transactional
+    @AuditLog
     public Unit create(CreateUnitRequest request) {
         var unit = new Unit();
         unit.setName(request.name());
@@ -34,6 +36,7 @@ public class UnitService {
     }
 
     @Transactional
+    @AuditLog
     public void delete(Long id) {
         if (!unitRepository.existsById(id)) {
             throw new NotFoundException("Unit with this id not found");

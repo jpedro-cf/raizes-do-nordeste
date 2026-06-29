@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import raizes.nordeste.app.api.config.audit.AuditLog;
 import raizes.nordeste.app.application.dto.CreateOrderRequest;
 import raizes.nordeste.app.application.dto.OrderResponse;
 import raizes.nordeste.app.application.dto.UpdateOrderStatusRequest;
@@ -29,7 +30,6 @@ public class OrdersService {
     private final StockRepository stockRepository;
     private final UnitRepository unitRepository;
     private final UsersRepository usersRepository;
-    private final LoyaltyService loyaltyService;
     private final PointsTransactionRepository pointsTransactionRepository;
 
     @Transactional
@@ -160,6 +160,7 @@ public class OrdersService {
     }
 
     @Transactional
+    @AuditLog
     public OrderResponse updateStatus(Long id, UpdateOrderStatusRequest request) {
         var order = ordersRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order not found with this id."));
@@ -173,6 +174,7 @@ public class OrdersService {
     }
 
     @Transactional
+    @AuditLog
     public void cancel(Long id) {
         var order = ordersRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order not found with this id."));
