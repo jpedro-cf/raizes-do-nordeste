@@ -7,9 +7,10 @@ Este repositório contém a API REST para a rede de lanchonetes **Raízes do Nor
 - [Tecnologias](#tecnologias)
 - [Requisitos](#requisitos)
 - [Instalação](#instalação)
+- [Swagger](#swagger)
 - [Endpoints](#endpoints)
-- [Informações Insomnia](#insomnia)
 - [Fluxo Principal](#fluxo-principal)
+- [Informações Insomnia](#insomnia)
 
 ## Tecnologias
 
@@ -77,13 +78,19 @@ ADMIN_PASSWORD="password"
 JWT_SECRET="2bd3855646db537030105d119dbdf37d39b16fb174dafbaa1424d8441b1671a9"
 ```
 
-Observação: Há também a variável "JWT_SECRET" que é usada para verificar a integridade dos tokens JWT na aplicação. Essa variável deve ser uma chave secreta de 256 bits (32 bytes). Para gerá-la, é recomendado usar o comando OpenSSL caso tenha instalado na sua máquina:
+### Observação 
+ - Há também a variável "JWT_SECRET" que é usada para verificar a integridade dos tokens JWT na aplicação. 
+ - Essa variável deve ser uma chave secreta de 256 bits (32 bytes). 
+ - Para gerá-la, é recomendado usar o comando OpenSSL caso tenha instalado na sua máquina:
 
 ```bash
 openssl rand -hex 32
 ```
 
 Caso não queira ter problemas, pode deixar como está definido mesmo.
+
+## Swagger
+- A documentação Swagger estará disponível em http://localhost:8080/swagger-ui/index.html após executar a aplicação.
 
 ## Endpoints
 
@@ -114,18 +121,18 @@ Com base no arquivo de ambiente de testes `insomnia.json`, os contratos de dados
 | `GET` | `/payments` | `ADMIN` | Listar todos os pagamentos. |
 | `GET` | `/loyalty` | `ADMIN`, `CUSTOMER` | Listar os histórico de pontos de fidelidade. |
 
+## Fluxo Principal
+
+Certifique-se de que pelo menos uma unidade, pelo menos um produto e pelo menos um estoque com esse produto já foram registrados anteriormente.
+
+1. Registrar usuário -> `/auth/register`
+2. Fazer login -> `/auth/login` (guarde o token)
+3. Criar pedido -> `/orders` (use o token no header)
+4. Processar pagamento -> `/payments`
+
 ## Insomnia
 
 1. Abra o seu **Insomnia Client**.
 2. No canto superior direito, clique em **Import** -> **From File**.
 3. Selecione o arquivo `insomnia.json` localizado na raiz deste projeto.
 4. Configure as variáveis `url` e `token` caso já não esteja configurado, recomendado configurar para buscar automaticamente o token dentro de `/auth/login`.
-
-## Fluxo Principal
-
-Certifique-se de que pelo menos uma unidade, pelo menos um produto e pelo menos um estoque com esse produto já foram registrados anteriormente.
-
-1. Registrar usuário -> `/auth/register` 
-2. Fazer login -> `/auth/login` (guarde o token)
-3. Criar pedido -> `/orders` (use o token no header)
-4. Processar pagamento -> `/payments`
