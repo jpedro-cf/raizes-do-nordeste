@@ -31,6 +31,7 @@ services:
       DB_PASSWORD: "${DB_PASSWORD:-password}"
       DB_NAME: "${DB_NAME:-raizes_nordeste}"
       ADMIN_PASSWORD: "${ADMIN_PASSWORD:-password}"
+      SECRET: "${JWT_SECRET:-2bd3855646db537030105d119dbdf37d39b16fb174dafbaa1424d8441b1671a9}"
    depends_on:
       db:
         condition: service_healthy
