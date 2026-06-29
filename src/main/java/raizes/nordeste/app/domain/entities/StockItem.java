@@ -1,10 +1,7 @@
 package raizes.nordeste.app.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigInteger;
 import java.time.Instant;
@@ -12,7 +9,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "stock_items",
         uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "unit_id"}))
-@Getter @Setter
+@Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class StockItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

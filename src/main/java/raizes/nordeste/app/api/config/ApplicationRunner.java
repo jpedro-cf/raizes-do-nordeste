@@ -1,26 +1,34 @@
 package raizes.nordeste.app.api.config;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 import raizes.nordeste.app.application.Hasher;
-import raizes.nordeste.app.domain.entities.User;
-import raizes.nordeste.app.domain.entities.UserRole;
+import raizes.nordeste.app.domain.entities.*;
+import raizes.nordeste.app.infra.repositories.ProductsRepository;
+import raizes.nordeste.app.infra.repositories.StockRepository;
+import raizes.nordeste.app.infra.repositories.UnitRepository;
 import raizes.nordeste.app.infra.repositories.UsersRepository;
 
+import java.math.BigInteger;
 import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
 public class ApplicationRunner implements org.springframework.boot.ApplicationRunner {
     private final UsersRepository usersRepository;
+    private final ProductsRepository productsRepository;
+    private final UnitRepository unitRepository;
+    private final StockRepository stockRepository;
     private final Hasher hasher;
 
     @Value("${admin.password}")
     private String adminPassword;
 
     @Override
+    @Transactional
     public void run(ApplicationArguments args) throws Exception {
         if (usersRepository.findByEmail("admin@email.com").isPresent()) return;
 
@@ -37,6 +45,31 @@ public class ApplicationRunner implements org.springframework.boot.ApplicationRu
                 .build();
 
         usersRepository.save(user);
-        System.out.println("ADMIN user created successfully.");
+
+        var product = Product.builder()
+                        .name("Produto de Teste")
+                        .basePrice(BigInteger.valueOf(10500))
+                        .createdAt(Instant.now())
+                        .build();
+
+        productsRepository.save(product);
+
+        var unit = Unit.builder()
+                        .address("São Paulo - Centro")
+                        .name("Unidade de São Paulo e Região")
+                        .createdAt(Instant.now())
+                        .build();
+
+        unitRepository.save(unit);
+
+        var stockItem = StockItem.builder()
+                .product(product)
+                .unit(unit)
+                .amountInStock(10L)
+                .price(product.getBasePrice())
+                .createdAt(Instant.now())
+                .build();
+
+        stockRepository.save(stockItem);
     }
 }
