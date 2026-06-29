@@ -6,7 +6,7 @@ Este repositório contém a API REST para a rede de lanchonetes **Raízes do Nor
 
 - [Tecnologias](#tecnologias)
 - [Requisitos](#requisitos)
-- [Instalação](#instalacao)
+- [Instalação](#instalação)
 - [Endpoints](#endpoints)
 - [Informações Insomnia](#insomnia)
 - [Fluxo Principal](#fluxo-principal)
